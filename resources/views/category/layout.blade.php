@@ -1,3 +1,5 @@
+@extends('index')
+@section('category-content')
 <!DOCTYPE html>
 <html>
 
@@ -22,6 +24,13 @@
 
 
        </script>
+       @endsection
+
+
+<div class="container">
+    @yield('content')
+</div>
+
 </body>
 
 </html>

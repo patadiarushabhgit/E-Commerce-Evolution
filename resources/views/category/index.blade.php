@@ -33,23 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            {{-- @foreach ($categories as $category)
-                <tr>
-                    <td>{{ ++$i }}</td>
-                    <td><img src="/images/{{ $category->image }}" width="100px"></td>
-                    <td>{{ $category->name }}</td>
-                    <td>{{ $category->status == 1 ? 'Active' : 'Inactive' }}</td>
-                    <td>
-                        <form action="{{ route('category.destroy', $category->id) }}" method="POST">
-                            <a class="btn btn-info" href="{{ route('category.show', $category->id) }}">Show</a>
-                            <a class="btn btn-primary" href="{{ route('category.edit', $category->id) }}">Edit</a>
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach --}}
+
             @foreach ($categories as $category)
                 <tr class="category{{ $category->id }}">
                     <td>{{ ++$i }}</td>

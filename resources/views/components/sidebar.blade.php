@@ -5,8 +5,9 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Core</div>
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="admin/index">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+
                     Dashboard
                 </a>
                 <div class="sb-sidenav-menu-heading">Interface</div>
@@ -18,7 +19,9 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="/category">Category</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">product</a>
+                        <a class="nav-link" href="/product">product</a>
+                        <a class="nav-link" href="/user">User</a>
+                        <a class="nav-link" href="/customer">Customer</a>
                     </nav>
                 </div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">

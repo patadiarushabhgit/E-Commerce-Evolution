@@ -58,5 +58,8 @@ Route::post('admin/register', [AuthController::class,'validateRegForm'])->name('
 Route::resource('category',CategoryController::class);
 Route::resource('user',UserController::class);
 Route::resource('customer',CustomerController::class);
+Route::post('api/fetch-state',[CustomerController::class,'fetchState'])->name('getStatesByCountry');
+Route::post('api/fetch-cities',[CustomerController::class,'fetchCity'])->name('cities.getCitiesByState');
+
 
 

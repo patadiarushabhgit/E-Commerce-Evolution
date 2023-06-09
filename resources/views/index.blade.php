@@ -20,6 +20,9 @@
 
             <div id="layoutSidenav_nav">
                 @include('components.sidebar')
+                {{-- <div>
+                    @yield('categorycontent')
+                </div> --}}
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
 
 
@@ -27,9 +30,11 @@
             </div>
 
                 </main>
-                @include('components.footer')
+
             </div>
+
         </div>
+        @include('components.footer')
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src={{asset('assets/js/scripts.js')}}></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
