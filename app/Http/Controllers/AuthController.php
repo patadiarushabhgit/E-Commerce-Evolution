@@ -13,50 +13,58 @@ use Illuminate\Validation\Rules\Exists;
 
 
 
+
+
 class AuthController extends Controller
 {
     public function login()
     {
         return view('auth.login');
     }
+    public function validateRegForm(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'email' => 'required|email',
+            'password' => ['required', 'string', Password::min(8)->letters()->numbers()->mixedCase()->symbols()]
+        ]);
+
+        if ($validator->passes()) {
+            // Create the user and add to the database
+            $user = DB::table('users')->insertGetId([
+                'name' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+
+            if ($user) {
+                Session::put('username', $request->username);
+                return redirect('/admin/index');
+            }
+        }
+
+        return response()->json(['error' => $validator->errors()]);
+    }
 
     public function validateLoginForm(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'email'=>'required',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
             'password' => 'required'
         ]);
-        if($validator->passes()){
 
-            $user = DB::table('users')->whereEmailAndPassword($request->email, $request->password)->first();
-            if ($user) {
-                // $username = DB::table('users')->where('email', $request->email)->where('password',$request->password)->value('name');
+        if ($validator->passes()) {
+            $user = DB::table('users')->where('email', $request->email)->first();
+
+            if ($user && Hash::check($request->password, $user->password)) {
                 Session::put('username', $user->name);
-                // return response()->json(['success'=>$user->name]);
                 return redirect('/admin/index');
             }
-            return response()->json(['failed'=>'Oops it seems like you dont have account or invalid email or password!...']);
+
+            return response()->json(['failed' => 'Invalid email or password!']);
         }
-        return response()->json(['error'=>$validator->errors()]);
-    }
 
-
-    public function validateRegForm(Request $request){
-        $validator = Validator::make($request->all(),[
-            'username'=>'required',
-            'email'=>'required|email',
-            'password' => ['required','string',Password::min(8)->letters()->numbers()->mixedCase()->symbols()]
-        ]);
-        if($validator->passes()){
-            DB::table('users')->insert([
-                'name' => $request->username,
-                'email' => $request->email,
-                'password' => $request->password
-            ]);
-            return redirect('/admin/index');
-
-        }
-        return response()->json(['error'=>$validator->errors()]);
+        return response()->json(['error' => $validator->errors()]);
     }
     public function index(){
         return view('admin/index');
@@ -68,4 +76,10 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/admin/login');
     }
+    public function view_profile(){
+        return view("auth.view_profile");
+
+    }
+
+
 }

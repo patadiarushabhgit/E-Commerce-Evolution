@@ -22,7 +22,7 @@
     <h2> Sign in/up Form</h2>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form method="POST" id="regForm" action="{{ route('validateRegForm') }}">
+            <form method="POST" id="regForm" action="{{ route('validateLoginForm') }}">
                 @csrf
                 <h1>Register </h1>
                 <div class="social-container">
@@ -35,7 +35,7 @@
                 <span class="name_err"></span>
                 <input type="email" placeholder="Email" id="regemail" name="email" required="">
                 <span class="email_err"></span>
-                <input type="password" placeholder="Password" id="regpassword" name="password" />
+                <input type="password" placeholder="Password" id="regpassword" name="password" required />
                 <span class="password_err"></span>
                 <button type="submit">Sign Up</button>
                 <span class="logedin"></span>
@@ -55,7 +55,7 @@
                 <span class="email_err"></span>
                 <input type="password" placeholder="Password" name="password" id="password">
                 <span class="pswd_err"></span>
-                <a href="#">Forgot your password?</a>
+                <a href="{{ route('forget.password.get') }}">Forgot your password?</a>
                 <button type="submit">Sign In</button>
                 <div class="success-message"></div>
             </form>
@@ -97,85 +97,79 @@
 
         // Login Form Validation
 
-            $('#myForm').submit(function(e) {
-                e.preventDefault();
-                var _token = $("input[name='_token']").val();
-                var email = $('#email').val();
-                var password = $('#password').val();
+        $('#myForm').submit(function(e) {
+            e.preventDefault();
+            var _token = $("input[name='_token']").val();
+            var email = $('#email').val();
+            var password = $('#password').val();
 
-                $.ajax({
-                    url: "{{ route('validateLoginForm') }}",
-                    type: "POST",
-                    data: {
-                        _token: _token,
-                        email: email,
-                        password: password
-                    },
-                    success: function(data) {
-                        if ($.isEmptyObject(data.error)) {
-                            if (data.success) {
-                                $('.email_err').text('');
-                                $('.password_err').text('');
-                                window.location.href = "/admin/index";
-                            } else {
-                                alert(data.failed);
-                                window.location.href = '/admin/login';
-                            }
+            $.ajax({
+                url: "{{ route('validateLoginForm') }}",
+                type: "POST",
+                data: {
+                    _token: _token,
+                    email: email,
+                    password: password
+                },
+                success: function(data) {
+                    if ($.isEmptyObject(data.error)) {
+                        if (data.success) {
+                            $('.email_err').text('');
+                            $('.password_err').text('');
+                            window.location.href = "/admin/index";
                         } else {
-                            printErrorMsg(data.error);
+                            alert(data.failed);
+                            window.location.href = '/admin/login';
                         }
+                    } else {
+                        printErrorMsg(data.error);
                     }
-                });
-
+                }
             });
 
-            function printErrorMsg(msg) {
-                $.each(msg, function(key, value) {
-                    $('.' + key + '_err').text(value);
-                })
-            }
+        });
 
+        function printErrorMsg(msg) {
+            $.each(msg, function(key, value) {
+                $('.' + key + '_err').text(value);
+            })
+        }
 
-        // //Registration Form validation
+        $('#regForm').submit(function(e) {
+            e.preventDefault();
+            var _token = $("input[name='_token']").val();
+            var username = $('#username').val();
+            var email = $('#regemail').val();
+            var password = $('#regpassword').val();
 
-        //     $('#regForm').submit(function(e) {
-        //         e.preventDefault();
-        //         var _token = $("input[name='_token']").val();
-        //         var username = $('#username').val();
-        //         var email = $('#regemail').val();
-        //         var password = $('#regpassword').val();
+            $.ajax({
+                url: "{{ route('validateRegForm') }}",
+                type: "POST",
+                data: {
+                    _token: _token,
+                    username: username,
+                    email: email,
+                    password: password
+                },
+                success: function(data) {
+                    if ($.isEmptyObject(data.error)) {
+                        $('.name_err').text('');
+                        $('.email_err').text('');
+                        $('.password_err').text('');
+                        window.location.href = "/admin/login";
+                        $('.logedin').text('Click on Login');
+                    } else {
+                        printErrorMsg(data.error);
+                    }
+                }
+            });
+        });
 
-        //         $.ajax({
-        //             url: "{{ route('validateRegForm') }}",
-        //             type: "POST",
-        //             data: {
-        //                 _token: _token,
-        //                 username: username,
-        //                 email: regemail,
-        //                 password: regpassword
-        //             },
-        //             success: function(data) {
-        //                 if ($.isEmptyObject(data.error)) {
-        //                     $('.name_err').text('');
-        //                     $('.email_err').text('');
-        //                     $('.password_err').text('');
-        //                     window.location.href = "/admin/login";
-        //                     $('.logedin').text('Click on Login');
-        //                 } else {
-        //                     printErrorMsg(data.error);
-        //                 }
-        //             }
-        //         });
-
-
-        //     });
-
-        //     function printErrorMsg(msg) {
-        //         $.each(msg, function(key, value) {
-        //             $('.' + key + '_err').text(value);
-        //         })
-        //     }
-
+        function printErrorMsg(msg) {
+            $.each(msg, function(key, value) {
+                $('.' + key + '_err').text(value);
+            })
+        }
     </script>
 </body>
 

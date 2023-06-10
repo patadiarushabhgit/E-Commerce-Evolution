@@ -8,8 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
-
-
+use App\Http\Controllers\ForgotPasswordController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,6 +51,7 @@ Route::get('/admin/index', [IndexController::class, 'index'])->name('adminindex'
 Route::get('/admin/login', [AuthController::class, 'login'])->name('adminlogin');
 Route::post('admin/login', [AuthController::class,'validateLoginForm'])->name('validateLoginForm');
 Route::post('admin/register', [AuthController::class,'validateRegForm'])->name('validateRegForm');
+Route::get('logout', [AuthController::class,'logout'])->name('logout');
 
 
 
@@ -60,6 +60,10 @@ Route::resource('user',UserController::class);
 Route::resource('customer',CustomerController::class);
 Route::post('api/fetch-state',[CustomerController::class,'fetchState'])->name('getStatesByCountry');
 Route::post('api/fetch-cities',[CustomerController::class,'fetchCity'])->name('cities.getCitiesByState');
-
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+Route::get('/admin/view_profile', [AuthController::class, 'view_profile'])->name('profile');
 
 
