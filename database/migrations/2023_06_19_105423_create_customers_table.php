@@ -8,32 +8,29 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->bigInteger('phone');
-            $table->longText('email');
+            $table->string( 'first_name');
+            $table->string('last_name');
+            $table->integer('phone_no');
             $table->string('address');
             $table->string('country');
             $table->string('state');
             $table->string('city');
-            $table->biginteger('postalCode');
+            $table->integer('postal_code');
             $table->timestamps();
         });
     }
 
+
+
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('customers');
     }

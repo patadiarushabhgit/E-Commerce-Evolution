@@ -58,6 +58,7 @@ class AuthController extends Controller
 
             if ($user && Hash::check($request->password, $user->password)) {
                 Session::put('username', $user->name);
+                Session::put('id', $user->id);
                 return redirect('/admin/index');
             }
 
@@ -75,10 +76,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/admin/login');
-    }
-    public function view_profile(){
-        return view("auth.view_profile");
-
     }
 
 

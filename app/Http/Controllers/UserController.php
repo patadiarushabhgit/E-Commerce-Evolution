@@ -41,7 +41,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => ['required','string',Password::min(8)->letters()->numbers()->mixedCase()->symbols()]
+            'password' => ['required', 'string', Password::min(8)->letters()->numbers()->mixedCase()->symbols()]
 
         ]);
 
@@ -96,5 +96,28 @@ class UserController extends Controller
 
         return redirect()->route('user.index')
             ->with('success', 'User updated successfully.');
+    }
+    public function edit_profile(Request $request)
+    {
+
+        $user = DB::table('users')->where('id', session('id'))->value('name', 'email');
+        $user = [
+            'name' => $request->name,
+            'email' => $request->email
+        ];
+
+        DB::table('users')
+            ->where('id', session('id'))
+            ->update($user);
+
+        return redirect()->route('view_profile')
+            ->with('success', 'User updated successfully.');
+    }
+    public function view_profile(User $user)
+    {
+        $user = User::where('id', session('id'))->first();
+
+
+        return view('auth.view_profile', compact('user'));
     }
 }
