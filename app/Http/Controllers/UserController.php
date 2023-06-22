@@ -8,6 +8,8 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\Paginator;
 
@@ -100,14 +102,14 @@ class UserController extends Controller
     public function edit_profile(Request $request)
     {
 
-        $user = DB::table('users')->where('id', session('id'))->value('name', 'email');
+        $user = DB::table('users')->where('id', Auth::user()->id)->value('name', 'email');
         $user = [
             'name' => $request->name,
             'email' => $request->email
         ];
 
         DB::table('users')
-            ->where('id', session('id'))
+            ->where('id', Auth::user()->id)
             ->update($user);
 
         return redirect()->route('view_profile')
@@ -115,9 +117,93 @@ class UserController extends Controller
     }
     public function view_profile(User $user)
     {
-        $user = User::where('id', session('id'))->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
 
         return view('auth.view_profile', compact('user'));
     }
-}
+
+    public function set_password(Request $request, User $user)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new-password' => ['required','string', Password::min(8)->letters()->numbers()->mixedCase()->symbols()],
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        $user = DB::table('users')->where('id', Auth::user()->id)->first();
+        if(!Hash::check($request->old_password, $user->password)){
+            return response()->json(['message' => 'invalid old password.'], 422);
+        }
+        //check is old password and new are same
+        if($request->old_password === $request->new_password){
+            return response()->json(['message' => 'old and new password cannot be same.'],422);
+        }
+        //update users password
+        $user = [
+            'password' => Hash::make($request->new_password),
+        ];
+        Db::table('users')
+        ->where('id',Auth::user()->id)
+        ->update($user);
+        return response()->json(['success'=>true]);
+
+        }
+
+        public function getUsers(Request $request)
+        {
+            // Read value
+            $draw = $request->input('draw');
+            $start = $request->input('start');
+            $length = $request->input('length');
+
+            $searchValue = $request->input('search.value');
+
+            // Total records
+            $totalRecords = User::count();
+
+            // Apply search filter
+            $filteredRecords = User::where('name', 'like', '%' . $searchValue . '%')
+                ->count();
+
+            // Fetch records with pagination and search
+            $records = User::where('name', 'like', '%' . $searchValue . '%')
+                ->orderBy('id', 'desc')
+                ->skip($start)
+                ->take($length)
+                ->get();
+
+            $data = [];
+            $counter = $start + 1;
+
+            foreach ($records as $record) {
+
+
+                $row = [
+                    $counter,
+                    $record->name,
+                    $record->email,
+
+                    '<a href="' . route('user.edit', $record->id) . '" class="btn"><i class="fa-regular fa-pen-to-square"></i></a>&nbsp;' .
+                    '<a href="' . route('user.show', $record->id) . '" class="btn"><i class="fa-solid fa-eye"></i></a>&nbsp;' .
+                    '<form action="' . route('user.destroy', $record->id) . '" method="POST" style="display:inline">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
+                        <button type="submit" class="btn"><i class="fa-solid fa-trash-can"></i></button>
+                    </form>'
+                ];
+
+                $data[] = $row;
+                $counter++;
+            }
+
+            $response = [
+                'draw' => intval($draw),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $filteredRecords,
+                'data' => $data,
+            ];
+
+            return response()->json($response);
+        }
+    }
+

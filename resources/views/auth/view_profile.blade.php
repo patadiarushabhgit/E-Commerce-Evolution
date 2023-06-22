@@ -10,31 +10,48 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <style>
-    .profile-image {
-   display: inline-block;
-   width: 40px;
-   height: 40px;
-   border-radius: 50%;
-   background-color: #ff6600;
-   color: #ffffff;
-   text-align: center;
-   font-size: 18px;
-   line-height: 40px;
-   margin-right: 10px;
-   font-weight: bold;
-   font-family: 'Arial', sans-serif;
-   text-transform: uppercase;
-   box-shadow: 0 2px 4px rgba(, 0, 0, 0.2);
-   transition: background-color 0.3s ease, color 0.3s ease;
- }
+   .profile-image {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 20%;
+  background-color: #ff6600;
+  color: #ffffff;
+  text-align: center;
+  font-size: 18px;
+  line-height: 40px;
+  margin-right: 10px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
- .profile-image:hover {
-   background-color: #fcfcfc;
-   color: #ff6600;
- }
+.profile-image:hover {
+  background-color: #fcfcfc;
+  color: #ff6600;
+  border-radius: 20%;
+  border: 0.8px outset #ff6600;
+}
+
+    .password-input {
+        position: relative;
+    }
+
+    .password-input .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+</style>
 
 
- </style>
+
+
+
 <body>
 	<section class="py-5 my-5">
         <div class="container">
@@ -43,9 +60,9 @@
                 <div class="profile-tab-nav border-right">
                     <div class="p-4">
                         <div class="img-circle text-center mb-3">
-                            <span class="profile-image">{{substr(session('username'),0,1)}}</span>
+                            <span class="profile-image">{{ substr((Auth::user()->name), 0, 1) }}</span>
                         </div>
-                        <h4 class="text-center">{{strtoupper(session('username'))}}</h4>
+                        <h4 class="text-center">{{strtoupper(Auth::user()->name)}}</h4>
                     </div>
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
@@ -94,7 +111,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form id="set_password_form" method="post" enctype="multipart/form-data">
+                        {{-- <form id="set_password_form" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -121,19 +138,73 @@
                             <div>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
+                        </form> --}}
+                        <form id="set_password_form" method="post" enctype="multipart/form-data" action="{{ route('edit_profile') }}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Old password</label>
+                                        <div class="password-input">
+                                            <input type="password" id="old_password" name="old_password" class="form-control">
+                                            <i class="toggle-password fas fa-eye"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>New password</label>
+                                        <div class="password-input">
+                                            <input type="password" id="new_password" name="new_password" class="form-control">
+                                            <i class="toggle-password fas fa-eye"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Confirm new password</label>
+                                        <div class="password-input">
+                                            <input type="password" id="confirm_password" name="confirm_password" class="form-control">
+                                            <i class="toggle-password fas fa-eye"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
                         </form>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <script>
+        const togglePassword = document.querySelectorAll('.toggle-password');
+
+        togglePassword.forEach((icon) => {
+            icon.addEventListener('click', () => {
+                const inputField = icon.previousElementSibling;
+                const fieldType = inputField.getAttribute('type') === 'password' ? 'text' : 'password';
+                inputField.setAttribute('type', fieldType);
+
+                // Toggle the icon based on the password visibility
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
+{{-- <script>
     $(document).ready(function() {
         // Handle form submission
         $('#set_password_form').submit(function(e) {
@@ -174,6 +245,6 @@
             });
         });
     });
-</script>
+</script> --}}
 </body>
 </html>

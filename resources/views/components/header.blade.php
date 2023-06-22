@@ -26,7 +26,7 @@
 </style>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/admin/index">{{ session('username') }}</a>
+    <a class="navbar-brand ps-3" href="/admin/index">{{ Auth::user()->name }}</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
             class="fas fa-bars"></i></button>
@@ -45,7 +45,7 @@
             <a class="navbar-brand ps-3" href="index.html class="nav-link dropdown-toggle id="navbarDropdown"
                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="profile-image">
-                    <span>{{ substr(session('username'), 0, 1) }}</span>
+                    <span>{{ substr((Auth::user()->name), 0, 1) }}</span>
                 </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -60,7 +60,7 @@
     </ul>
 </nav>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="index.html">{{ session('username') }}</a>
+    <a class="navbar-brand" href="index.html">{{ Auth::user()->name }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

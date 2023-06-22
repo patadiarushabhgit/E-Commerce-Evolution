@@ -1,7 +1,4 @@
-@if (session('username')==NULL)
-<script>window.location.href='/admin/login';</script>
 
-@endif
 <!DOCTYPE html>
 <html lang="en">
     <head>

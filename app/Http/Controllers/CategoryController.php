@@ -45,18 +45,20 @@ class CategoryController extends Controller
 
 
 
+
+
         // if ($image = $request->file('image')) {
         //     $destinationPath = 'images/';
         //     $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
         //     $image->move($destinationPath, $profileImage);
         //     $input['image'] = "$profileImage";
         // }
-        $imagename= date('d-m-y')."-".$request->image->getClientOriginalName();
-        $PriorPath=('images');
-        if(!$PriorPath){
+        $imagename = date('d-m-y') . "-" . $request->image->getClientOriginalName();
+        $PriorPath = ('images');
+        if (!$PriorPath) {
             File::makeDirectory('images');
         }
-        $path = $request->image->move($PriorPath,$imagename);
+        $path = $request->image->move($PriorPath, $imagename);
 
 
 
@@ -70,9 +72,73 @@ class CategoryController extends Controller
 
         return redirect()->route('category.index')
             ->with('success', 'Category created successfully.');
-
     }
 
+
+    public function getCategory(Request $request)
+    {
+        // Read value
+        $draw = $request->input('draw');
+        $start = $request->input('start');
+        $length = $request->input('length');
+
+        $searchValue = $request->input('search.value');
+
+        // Total records
+        $totalRecords = Category::count();
+
+        // Apply search filter
+        $filteredRecords = Category::where('name', 'like', '%' . $searchValue . '%')
+            ->count();
+
+        // Fetch records with pagination and search
+        $records = Category::where('name', 'like', '%' . $searchValue . '%')
+            ->orderBy('id', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $data = [];
+        $counter = $start + 1;
+
+        foreach ($records as $record) {
+            $status = $record->status == '1' ? '<span class="badge rounded-pill text-success bg-success text-light">Active</span>' : '<span class="badge rounded-pill text-danger bg-danger text-light">Inactive</span>';
+
+
+
+            $row = [
+                '<h3>' . $counter . '</h3>',
+                '<h3>' . $record->name . '</h3>',
+                '<h3>' . $status . '</h3>',
+                $image = $record->image ? '<img src="' . asset($record->image) . '" alt="Category Image" width="100">' : 'No Image',
+
+
+                '<a href="' . route('category.edit', $record->id) . '" class="btn"><h3><i class="fa-regular fa-pen-to-square"></i></h3></a>&nbsp;' .
+                    '<a href="' . route('category.show', $record->id) . '" class="btn"><h3><i class="fa-solid fa-eye"></i></h3></a>&nbsp;' .
+                    '<form action="' . route('category.destroy', $record->id) . '" method="POST" style="display:inline">
+                ' . csrf_field() . '
+                ' . method_field('DELETE') . '
+                <button type="submit" class="btn"><h3><i class="fa-solid fa-trash-can"></i></h3></button>
+            </form>'
+
+
+
+
+            ];
+
+            $data[] = $row;
+            $counter++;
+        }
+
+        $response = [
+            'draw' => intval($draw),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data,
+        ];
+
+        return response()->json($response);
+    }
 
     public function show(Category $category)
     {
@@ -95,40 +161,40 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, Category $category)
-{
-    $request->validate([
-        'name' => 'required',
-        'status' => 'required',
-        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required',
+            'status' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    $previousImage = $category->image;
+        $previousImage = $category->image;
 
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = date('d-m-y') . "-" . $image->getClientOriginalName();
-        $destinationPath = 'images';
-        $path = $image->move($destinationPath, $imageName);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = date('d-m-y') . "-" . $image->getClientOriginalName();
+            $destinationPath = 'images';
+            $path = $image->move($destinationPath, $imageName);
 
-        if ($previousImage) {
-            // Delete the previous image
-            File::delete(public_path($previousImage));
+            if ($previousImage) {
+                // Delete the previous image
+                File::delete(public_path($previousImage));
+            }
+
+            $category->image = $path;
+        } elseif ($request->has('delete_image')) {
+            // Delete the image if delete_image checkbox is selected
+            if ($previousImage) {
+                File::delete(public_path($previousImage));
+            }
+            $category->image = null;
         }
 
-        $category->image = $path;
-    } elseif ($request->has('delete_image')) {
-        // Delete the image if delete_image checkbox is selected
-        if ($previousImage) {
-            File::delete(public_path($previousImage));
-        }
-        $category->image = null;
+        $category->name = $request->name;
+        $category->status = $request->status;
+        $category->save();
+
+        return redirect()->route('category.index')
+            ->with('success', 'Category updated successfully.');
     }
-
-    $category->name = $request->name;
-    $category->status = $request->status;
-    $category->save();
-
-    return redirect()->route('category.index')
-        ->with('success', 'Category updated successfully.');
-}
 }

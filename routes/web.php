@@ -68,9 +68,13 @@ Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showRese
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 
-Route::get('/admin/edit_profile', [UserController::class, 'edit_profile'])->name('edit_profile');
+Route::post('/admin/edit_profile', [UserController::class, 'edit_profile'])->name('edit_profile');
 Route::get('/admin/view_profile', [UserController::class, 'view_profile'])->name('view_profile');
 
 
 Route::get('/admin/set_password', [UserController::class, 'set_password'])->name('set_password');
+Route::post('/admin/category/get', [CategoryController::class, 'getCategory'])->name('category.getCategory');
+Route::post('/admin/user/get', [UserController::class, 'getUser'])->name('user.getUser');
+Route::post('/admin/customer/get', [CustomerController::class, 'getCustomer'])->name('customer.getCustomer');
+
 
