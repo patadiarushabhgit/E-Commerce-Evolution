@@ -19,7 +19,7 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="/category">Category</a>
-                        <a class="nav-link" href="/product">product</a>
+                        <a class="nav-link" href="/products">product</a>
                         <a class="nav-link" href="/user">User</a>
                         <a class="nav-link" href="/customer">Customer</a>
                     </nav>

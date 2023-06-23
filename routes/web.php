@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -76,5 +77,9 @@ Route::get('/admin/set_password', [UserController::class, 'set_password'])->name
 Route::post('/admin/category/get', [CategoryController::class, 'getCategory'])->name('category.getCategory');
 Route::post('/admin/user/get', [UserController::class, 'getUser'])->name('user.getUser');
 Route::post('/admin/customer/get', [CustomerController::class, 'getCustomer'])->name('customer.getCustomer');
+
+
+
+Route::resource('/admin/products', ProductController::class);
 
 
