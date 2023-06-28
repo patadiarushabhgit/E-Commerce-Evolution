@@ -26,17 +26,16 @@ use App\Http\Controllers\ProductController;
 // });
 
 
-Route::redirect('/', '/admin/login', 301);
+// Route::redirect('/', '/admin/login', 301);
 
-Route::redirect('/admin', '/admin/login', 301);
+// Route::redirect('/admin', '/admin/login', 301);
 
 
-Route::controller(AuthController::class)->group(function () {
+// // Route::controller(AuthController::class)->group(function () {
 
-    Route::get('/admin/login', 'login')->name('adminlogin');
-    Route::get('/admin/logout', 'logout')->name('logout');
-
-});
+//     Route::get('/admin/login', 'login')->name('adminlogin');
+//     Route::get('/admin/logout', 'logout')->name('logout');
+// });
 
 
 Route::get('/admin/index', [IndexController::class, 'index'])->name('adminindex');
@@ -50,17 +49,17 @@ Route::get('/admin/index', [IndexController::class, 'index'])->name('adminindex'
 
 // Route::post('/login', 'AuthController@validateForm')->name('validateForm');
 Route::get('/admin/login', [AuthController::class, 'login'])->name('adminlogin');
-Route::post('admin/login', [AuthController::class,'validateLoginForm'])->name('validateLoginForm');
-Route::post('admin/register', [AuthController::class,'validateRegForm'])->name('validateRegForm');
-Route::get('logout', [AuthController::class,'logout'])->name('logout');
+Route::post('admin/login', [AuthController::class, 'validateLoginForm'])->name('validateLoginForm');
+Route::post('admin/register', [AuthController::class, 'validateRegForm'])->name('validateRegForm');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 
-Route::resource('category',CategoryController::class);
-Route::resource('user',UserController::class);
-Route::resource('customer',CustomerController::class);
-Route::post('api/fetch-state',[CustomerController::class,'fetchState'])->name('getStatesByCountry');
-Route::post('api/fetch-cities',[CustomerController::class,'fetchCity'])->name('cities.getCitiesByState');
+Route::resource('category', CategoryController::class);
+Route::resource('user', UserController::class);
+Route::resource('customer', CustomerController::class);
+Route::post('api/fetch-state', [CustomerController::class, 'fetchState'])->name('getStatesByCountry');
+Route::post('api/fetch-cities', [CustomerController::class, 'fetchCity'])->name('cities.getCitiesByState');
 
 
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
@@ -80,6 +79,7 @@ Route::post('/admin/customer/get', [CustomerController::class, 'getCustomer'])->
 
 
 
-Route::resource('/admin/products', ProductController::class);
-
-
+Route::resource('/product', ProductController::class);
+Route::post('/getProduct', [ProductController::class, 'getProducts'])->name('getProducts');
+Route::delete('/deleteimage/{image}', [ProductController::class,'delete'])->name('delete.image');
+Route::post('/product/{productId}/image', [ProductController::class, 'storeImage'])->name('product.image.store');
