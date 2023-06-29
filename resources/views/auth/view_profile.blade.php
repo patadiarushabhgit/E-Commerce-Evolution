@@ -1,4 +1,5 @@
-
+@extends('index')
+@section('profile_content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,6 +94,12 @@
                                           <input type="text" id="email" name="email" class="form-control" value="{{ $user->email }}">
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                          <label>Role</label>
+                                          <input type="text" id="role" name="role" class="form-control" value="{{ $user->roles }}">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-primary">Update</button>
@@ -111,34 +118,7 @@
                                 </ul>
                             </div>
                         @endif
-                        {{-- <form id="set_password_form" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                          <label>Old password</label>
-                                          <input type="password" id="old_password" name="old_password" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                          <label>New password</label>
-                                          <input type="password" id="new_password" name="new_password" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                          <label>Confirm new password</label>
-                                          <input type="password" id="confirm_password" name="confirm_password" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                        </form> --}}
+
                         <form id="set_password_form" method="post" enctype="multipart/form-data" action="{{ route('edit_profile') }}">
                             @csrf
                             <div class="row">
@@ -204,47 +184,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-{{-- <script>
-    $(document).ready(function() {
-        // Handle form submission
-        $('#set_password_form').submit(function(e) {
-            e.preventDefault(); // Prevent default form submission
 
-            // Get form data
-            var oldPassword = $('#old_password').val();
-            var newPassword = $('#new_password').val();
-            var confirmPassword = $('#confirm_password').val();
-
-            // Send AJAX request
-            $.ajax({
-                url: '{{ route('set_password') }}',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    old_password: oldPassword,
-                    new_password: newPassword,
-                    confirm_password: confirmPassword
-                },
-                success: function(response) {
-                    // Handle success response
-                    // Display success message or perform any other actions
-
-                    // Example: Show success toaster
-                    if (response.success) {
-                        toastr.success('Password updated successfully.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Handle error response
-                    // Display error message or perform any other actions
-
-                    // Example: Show error toaster
-                    toastr.error(xhr.responseJSON.message);
-                }
-            });
-        });
-    });
-</script> --}}
 </body>
 </html>
+@endsection

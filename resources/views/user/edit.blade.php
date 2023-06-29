@@ -43,6 +43,18 @@
                         placeholder="Email">
                 </div>
             </div>
+            <div class="form-group">
+                <strong>Role:</strong>
+                <select name="role" class="form-control">
+                    <option value="">Select a role</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->name }}" {{ $userrole == $role->name ? 'selected' : '' }}>
+                            {{ $role->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
 
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">

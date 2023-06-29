@@ -73,8 +73,8 @@
                     <i class="fas fa-user fa-fw"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#!">View Profile</a>
-                    <a class="dropdown-item" href="#!">Change Password</a>
+                    <a class="dropdown-item" href="/view_profile">View Profile</a>
+                    <a class="dropdown-item" href="/view_profile">Change Password</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                 </div>
@@ -82,3 +82,10 @@
         </ul>
     </div>
 </nav>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.dropdown-toggle').dropdown();
+    });
+  </script>

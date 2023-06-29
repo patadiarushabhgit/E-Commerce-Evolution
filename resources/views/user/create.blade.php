@@ -46,6 +46,18 @@
                     <input type="password" name="password" class="form-control" placeholder="password">
                 </div>
             </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Role:</strong>
+                    <select name="roles" class="form-control" >
+                        <option value="">Select Role</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->name ?? '' }}">{{ $role->name ?? '' }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+            </div>
 
 
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">

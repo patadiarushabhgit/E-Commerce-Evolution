@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -83,3 +84,7 @@ Route::resource('/product', ProductController::class);
 Route::post('/getProduct', [ProductController::class, 'getProducts'])->name('getProducts');
 Route::delete('/deleteimage/{image}', [ProductController::class,'delete'])->name('delete.image');
 Route::post('/product/{productId}/image', [ProductController::class, 'storeImage'])->name('product.image.store');
+
+
+Route::resource('/role', RoleController::class);
+Route::post('/getRole', [RoleController::class, 'getRoles'])->name('getRoles');

@@ -1,3 +1,6 @@
+@extends('index')
+@section('user-content')
+
 <!DOCTYPE html>
 <html>
 
@@ -26,3 +29,4 @@
 </body>
 
 </html>
+@endsection

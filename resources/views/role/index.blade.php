@@ -1,13 +1,13 @@
-@extends('user.layout')
+@extends('role.layout')
 
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div style="margin:20px;" class="pull-left">
-                <h2>User</h2>
+                <h2>Roles</h2>
             </div>
             <div  style="margin:20px;"    class="pull-right">
-                <a class="btn btn-success" href="{{ route('user.create') }}"> Create New user</a>
+                <a class="btn btn-success" href="{{ route('role.create') }}"> Create New role</a>
             </div>
         </div>
     </div>
@@ -29,8 +29,6 @@
                                 <th>id</th>
                                 {{-- <th>image</th> --}}
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -60,7 +58,7 @@
                 responsive: true,
                 'serverSide': true,
                 "ajax": {
-                    "url": "{{ route('user.getUser') }}",
+                    "url": "{{ route('getRoles') }}",
                     "type": "POST",
                     "data": function(data) {
                         data._token = $('meta[name="csrf-token"]').attr('content');

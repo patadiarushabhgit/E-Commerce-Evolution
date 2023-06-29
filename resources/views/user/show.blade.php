@@ -1,70 +1,35 @@
 @extends('user.layout')
 
-@section('content')
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2> Show user</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('user.index') }}"> Back</a>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Name:</strong>
-                {{ $user->name }}
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Status:</strong>
-                {{ $user->status==1?'Active':'Inactive' }}
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Image:</strong>
-                <img src="/images/{{ $user->image }}" width="100px">
+@section('content')
+    <div  style="margin:50px;"class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <h2>Show User</h2>
+                            <a class="btn btn-primary" href="{{ route('user.index') }}">Back</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <strong>Name:</strong>
+                            {{ $user->name }}
+                        </div>
+                        <div class="form-group">
+                            <strong>Role:</strong>
+                            {{ $user->roles }}
+                        </div>
+                        <div class="form-group">
+                            <strong>Email:</strong>
+                            {{ $user->email }}
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 @endsection
-@extends('user.layout')
 
-@section('content')
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2> Show User</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('user.index') }}"> Back</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Name:</strong>
-                {{ $user->name }}
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Email:</strong>
-                {{ $user->email }}
-            </div>
-        </div>
-
-
-
-
-
-    </div>
-@endsection

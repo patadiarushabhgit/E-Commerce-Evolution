@@ -21,7 +21,9 @@
                         <a class="nav-link" href="/category">Category</a>
                         <a class="nav-link" href="/product">product</a>
                         <a class="nav-link" href="/user">User</a>
+                        <a class="nav-link" href="/role">Role</a>
                         <a class="nav-link" href="/customer">Customer</a>
+                        <a class="nav-link" href="/admin/view_profile">Profile</a>
                     </nav>
                 </div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
